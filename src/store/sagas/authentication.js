@@ -1,4 +1,7 @@
 import {
+  path,
+} from 'ramda'
+import {
   all,
   put,
   takeLatest,
@@ -17,7 +20,8 @@ function* asyncRegister(action) {
     yield call(AsyncStorage.setItem, 'token', token)
     yield call(AsyncStorage.setItem, 'user', JSON.stringify(user))
   } catch (error) {
-    yield put(AuthCreator.registerAuthenticationFailure(error))
+    const errorMessage = path(['response', 'data', 'errors', 0, 'detail'], error)
+    yield put(AuthCreator.registerAuthenticationFailure(errorMessage))
   }
 }
 

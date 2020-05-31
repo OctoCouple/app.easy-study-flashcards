@@ -1,7 +1,4 @@
 import React, { useState } from 'react'
-// import { AsyncStorage } from 'react-native'
-// import { useSelector, useDispatch } from 'react-redux'
-// import { Creators as AuthCreators } from '@store/authentication'
 
 import { TextInput, Text, Title } from 'react-native-paper'
 import PrimaryButton from '@components/PrimaryButton'
