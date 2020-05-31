@@ -1,37 +1,29 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import store from '@/store'
-import SignUp from '@pages/SignUp'
-import { StyleSheet, View, Text } from 'react-native'
+import { View, Text, StatusBar } from 'react-native'
 import { Provider as PaperProvider } from 'react-native-paper'
 import theme from '@/styles/theme'
+import fonts from '@/styles/fonts'
 import { useFonts } from '@use-expo/font'
+import { NavigationContainer } from '@react-navigation/native'
+import Main from '@/navigations'
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    'Sarabun-Regular': require('./assets/fonts/Sarabun-Regular.ttf'),
-    'Sarabun-Medium': require('./assets/fonts/Sarabun-Medium.ttf'),
-    'Sarabun-Light': require('./assets/fonts/Sarabun-Light.ttf'),
-    'Sarabun-Thin': require('./assets/fonts/Sarabun-Thin.ttf'),
-    'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
-  })
-  if (fontsLoaded) {
-    return (
-      <Provider store={store}>
-        <PaperProvider theme={theme}>
-          <View style={style.container}>
-            <SignUp />
-          </View>
-        </PaperProvider>
-      </Provider>
-    )
-  }
-  return <View><Text>Loading...</Text></View>
-}
+  const [fontsLoaded] = useFonts(fonts)
 
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-})
+  if (!fontsLoaded) {
+    return <View><Text>Loading...</Text></View>
+  }
+
+  return (
+    <Provider store={store}>
+      <PaperProvider theme={theme}>
+        <StatusBar backgroundColor="#7b1fa2" barStyle="light-content" />
+        <NavigationContainer>
+          <Main />
+        </NavigationContainer>
+      </PaperProvider>
+    </Provider>
+  )
+}

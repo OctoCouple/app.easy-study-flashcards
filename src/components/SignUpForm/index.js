@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Creators as AuthCreators } from '@store/authentication'
 
 import { TextInput, Text, Title } from 'react-native-paper'
 import PrimaryButton from '@components/PrimaryButton'
 import TextButton from '@components/TextButton'
+import { useNavigation } from '@react-navigation/native'
+
 
 const SignUpForm = () => {
   const [name, setName] = useState('')
@@ -12,7 +14,7 @@ const SignUpForm = () => {
   const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
-  const { authentication, user: { user } } = useSelector((state) => state)
+  const navigation = useNavigation()
 
   function registerUser() {
     dispatch(AuthCreators.requestRegisterAuthentication({ email, name, password }))
@@ -22,17 +24,6 @@ const SignUpForm = () => {
     <>
       <Title>Signup Screen</Title>
       <Text>Fill the fields below</Text>
-      <Text>User:</Text>
-      <Text>{user.name}</Text>
-      <Text>{user.email}</Text>
-      <Text>
-        Token:
-        {authentication.token}
-      </Text>
-      <Text>
-        logado?
-        {authentication.isLogged ? 'sim' : 'não'}
-      </Text>
       <TextInput
         label="Name"
         mode="outlined"
@@ -61,7 +52,7 @@ const SignUpForm = () => {
       />
       <TextButton
         text="Sign in"
-        onPress={() => console.log('AUTH:', authentication)}
+        onPress={() => { navigation.navigate('SignIn') }}
       />
     </>
   )
