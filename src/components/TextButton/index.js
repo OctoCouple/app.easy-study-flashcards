@@ -14,7 +14,7 @@ const TextButton = ({
     disabled={disabled}
     loading={loading}
     onPress={onPress}
-    labelStyle={{ fontFamily: 'Roboto-Bold', fontSize: 16 }}
+    labelStyle={{ fontFamily: 'Roboto-Bold', fontSize: 18 }}
   >
     {text}
   </Button>

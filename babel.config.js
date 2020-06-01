@@ -17,6 +17,7 @@ module.exports = function (api) {
             '@pages': './src/pages',
             '@store': './src/store/ducks',
             '@api': './src/service/api',
+            '@styles': './src/styles/shared',
           },
         },
       ],

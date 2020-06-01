@@ -18,7 +18,10 @@ const Home = () => {
       <View style={{ paddingVertical: 20, paddingHorizontal: 30 }}>
         <Title>Home</Title>
         <Text>Home sweet Home</Text>
-        <Text>token: {token}</Text>
+        <Text>
+          token:
+          {token}
+        </Text>
         <TextButton
           text="Sign out"
           onPress={logOut}

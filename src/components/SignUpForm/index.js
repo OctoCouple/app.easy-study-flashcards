@@ -1,11 +1,8 @@
 import React from 'react'
-import { View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { Creators as AuthCreators } from '@store/authentication'
 import {
   TextInput,
-  Text,
-  Title,
   HelperText,
   ActivityIndicator,
   useTheme,
@@ -13,6 +10,10 @@ import {
 import PrimaryButton from '@components/PrimaryButton'
 import { Formik } from 'formik'
 import * as yup from 'yup'
+import {
+  FormContainer,
+  FormContainerFields,
+} from './style'
 
 const validationSchema = yup.object().shape({
   name: yup
@@ -45,9 +46,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <>
-      <Title>Signup Screen</Title>
-      <Text>Fill the fields below</Text>
+    <FormContainer>
       <Formik
         initialValues={{
           name: '',
@@ -66,7 +65,7 @@ const SignUpForm = () => {
           touched,
           values,
         }) => (
-          <>
+          <FormContainerFields>
             <TextInput
               label="Name"
               mode="outlined"
@@ -113,20 +112,18 @@ const SignUpForm = () => {
             <HelperText type="error" visible={touched.password && errors.password}>
               {touched.password && errors.password}
             </HelperText>
-            <View style={{ marginTop: 30 }}>
-              {isSubmitting ? (
-                <ActivityIndicator animating color={colors.primary} />
-              ) : (
-                <PrimaryButton
-                  onPressAction={handleSubmit}
-                  text="Create account"
-                />
-              )}
-            </View>
-          </>
+            {isSubmitting ? (
+              <ActivityIndicator animating color={colors.primary} />
+            ) : (
+              <PrimaryButton
+                onPressAction={handleSubmit}
+                text="Create account"
+              />
+            )}
+          </FormContainerFields>
         )}
       </Formik>
-    </>
+    </FormContainer>
   )
 }
 

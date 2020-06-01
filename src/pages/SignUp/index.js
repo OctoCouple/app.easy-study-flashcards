@@ -1,24 +1,38 @@
 import React from 'react'
-import { View, KeyboardAvoidingView, Platform } from 'react-native'
-import TextButton from '@components/TextButton'
 import SignUpForm from '@components/SignUpForm'
+import TextButton from '@components/TextButton'
 import { useNavigation } from '@react-navigation/native'
+import HeaderImage from '@/assets/header-auth.png'
+import {
+  PageContainer,
+  FormTitle,
+  AuthImageHeader,
+} from '@styles'
+import {
+  FormContainer,
+  NavigateTextButtonContainer,
+} from './style'
 
 const SignUp = () => {
   const navigation = useNavigation()
   return (
-    <View
-      keyboardShouldPersistTaps="handled"
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <View style={{ paddingVertical: 20, paddingHorizontal: 30 }}>
+    <PageContainer>
+      <AuthImageHeader
+        source={HeaderImage}
+      />
+      <FormContainer
+        behavior="padding"
+      >
+        <FormTitle>Create your account</FormTitle>
         <SignUpForm />
+      </FormContainer>
+      <NavigateTextButtonContainer>
         <TextButton
           text="Sign in"
           onPress={() => { navigation.navigate('SignIn') }}
         />
-      </View>
-    </View>
+      </NavigateTextButtonContainer>
+    </PageContainer>
   )
 }
 
