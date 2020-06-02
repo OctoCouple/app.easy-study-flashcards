@@ -5,16 +5,29 @@ module.exports = function (api) {
     presets: [
       'babel-preset-expo',
       'module:metro-react-native-babel-preset',
+      'module:react-native-dotenv',
     ],
     plugins: [
       [
         'module-resolver',
         {
           alias: {
+            '@': './src/',
             '@components': './src/components',
+            '@pages': './src/pages',
+            '@store': './src/store/ducks',
+            '@api': './src/service/api',
+            '@styles': './src/styles/shared',
           },
         },
       ],
     ],
+    env: {
+      production: {
+        plugins: [
+          'react-native-paper/babel',
+        ],
+      },
+    },
   }
 }
