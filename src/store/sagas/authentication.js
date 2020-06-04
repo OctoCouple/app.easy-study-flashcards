@@ -1,5 +1,6 @@
 import {
   path,
+  equals,
 } from 'ramda'
 import {
   all,
@@ -9,19 +10,41 @@ import {
 } from 'redux-saga/effects'
 import { Creators as AuthCreator, Types } from '@store/authentication'
 import { Creators as UserCreator } from '@store/user'
-import { register } from '@api/authentication'
+import {
+  register,
+  login,
+} from '@api/authentication'
 import { AsyncStorage } from 'react-native'
+
+function* setAuthentication({ token, user }) {
+  yield put(AuthCreator.registerAuthenticationSuccess(token))
+  yield put(UserCreator.addUser(user))
+  yield call(AsyncStorage.setItem, 'token', token)
+  yield call(AsyncStorage.setItem, 'user', JSON.stringify(user))
+}
 
 function* asyncRegister(action) {
   try {
     const { token, user } = yield call(register, action.payload)
-    yield put(AuthCreator.registerAuthenticationSuccess(token))
-    yield put(UserCreator.addUser(user))
-    yield call(AsyncStorage.setItem, 'token', token)
-    yield call(AsyncStorage.setItem, 'user', JSON.stringify(user))
+    yield setAuthentication({ token, user })
   } catch (error) {
     const errorMessage = path(['response', 'data', 'errors', 0, 'detail'], error)
     yield put(AuthCreator.registerAuthenticationFailure(errorMessage))
+  }
+}
+
+function* asyncLogin(action) {
+  try {
+    const { token, user } = yield call(login, action.payload)
+    yield setAuthentication({ token, user })
+  } catch (error) {
+    const errorStatus = path(['response', 'status'], error)
+    if (equals(errorStatus, 401)) {
+      const errorMessage = 'Invalid credentials'
+      yield put(AuthCreator.registerAuthenticationFailure(errorMessage))
+    } else {
+      yield put(AuthCreator.registerAuthenticationFailure('Internal error'))
+    }
   }
 }
 
@@ -42,6 +65,10 @@ function* watchRequestAuthRegister() {
   yield takeLatest(Types.REQUEST_AUTH_REGISTER, asyncRegister)
 }
 
+function* watchRequestAuthLogin() {
+  yield takeLatest(Types.REQUEST_AUTH_LOGIN, asyncLogin)
+}
+
 function* watchRequestStoragetoken() {
   yield takeLatest(Types.REQUEST_STORAGE_TOKEN, setStorageData)
 }
@@ -55,6 +82,7 @@ function* authenticationSagas() {
     watchRequestAuthRegister(),
     watchRequestStoragetoken(),
     watchRequestLogout(),
+    watchRequestAuthLogin(),
   ])
 }
 

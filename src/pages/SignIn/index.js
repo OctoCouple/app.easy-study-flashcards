@@ -1,22 +1,50 @@
 import React from 'react'
-import { View } from 'react-native'
 import SignInForm from '@components/SignInForm'
 import TextButton from '@components/TextButton'
 import { useNavigation } from '@react-navigation/native'
-
+import HeaderImage from '@/assets/header-auth.png'
+import {
+  FormTitle,
+  SafeArea,
+  PageWithKeyboardContainer,
+  SpacedArea,
+  Spacer,
+} from '@styles'
+import {
+  AuthImageHeader,
+  DismissKeyboardArea,
+  NavigateTextButtonContainer,
+} from '@styles/authStyle'
+import {
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native'
 
 const SignIn = () => {
   const navigation = useNavigation()
   return (
-    <View>
-      <View style={{ paddingVertical: 20, paddingHorizontal: 30 }}>
-        <SignInForm />
-        <TextButton
-          text="Create account"
-          onPress={() => { navigation.navigate('SignUp') }}
-        />
-      </View>
-    </View>
+    <PageWithKeyboardContainer>
+      <SafeArea>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <DismissKeyboardArea>
+            <AuthImageHeader
+              source={HeaderImage}
+            />
+            <SpacedArea>
+              <FormTitle>Login</FormTitle>
+              <SignInForm />
+            </SpacedArea>
+            <Spacer />
+            <NavigateTextButtonContainer>
+              <TextButton
+                text="Create account"
+                onPress={() => { navigation.navigate('SignUp') }}
+              />
+            </NavigateTextButtonContainer>
+          </DismissKeyboardArea>
+        </TouchableWithoutFeedback>
+      </SafeArea>
+    </PageWithKeyboardContainer>
   )
 }
 

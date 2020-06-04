@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Creators as AuthCreators } from '@store/authentication'
+import { View } from 'react-native'
 import {
   TextInput,
   HelperText,
@@ -10,10 +11,6 @@ import {
 import PrimaryButton from '@components/PrimaryButton'
 import { Formik } from 'formik'
 import * as yup from 'yup'
-import {
-  FormContainer,
-  FormContainerFields,
-} from './style'
 
 const validationSchema = yup.object().shape({
   name: yup
@@ -46,7 +43,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <FormContainer>
+    <View>
       <Formik
         initialValues={{
           name: '',
@@ -65,7 +62,7 @@ const SignUpForm = () => {
           touched,
           values,
         }) => (
-          <FormContainerFields>
+          <View>
             <TextInput
               label="Name"
               mode="outlined"
@@ -102,7 +99,6 @@ const SignUpForm = () => {
               secureTextEntry
               autoCapitalize="none"
               autoCompleteType="password"
-              keyboardType="visible-password"
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               error={touched.password && errors.password}
@@ -120,10 +116,10 @@ const SignUpForm = () => {
                 text="Create account"
               />
             )}
-          </FormContainerFields>
+          </View>
         )}
       </Formik>
-    </FormContainer>
+    </View>
   )
 }
 
