@@ -4,35 +4,47 @@ import TextButton from '@components/TextButton'
 import { useNavigation } from '@react-navigation/native'
 import HeaderImage from '@/assets/header-auth.png'
 import {
-  PageContainer,
   FormTitle,
-  AuthImageHeader,
+  SafeArea,
+  PageWithKeyboardContainer,
+  SpacedArea,
+  Spacer,
 } from '@styles'
 import {
-  FormContainer,
+  AuthImageHeader,
+  DismissKeyboardArea,
   NavigateTextButtonContainer,
-} from './style'
+} from '@styles/authStyle'
+import {
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native'
 
 const SignUp = () => {
   const navigation = useNavigation()
   return (
-    <PageContainer>
-      <AuthImageHeader
-        source={HeaderImage}
-      />
-      <FormContainer
-        behavior="padding"
-      >
-        <FormTitle>Create your account</FormTitle>
-        <SignUpForm />
-      </FormContainer>
-      <NavigateTextButtonContainer>
-        <TextButton
-          text="Sign in"
-          onPress={() => { navigation.navigate('SignIn') }}
-        />
-      </NavigateTextButtonContainer>
-    </PageContainer>
+    <PageWithKeyboardContainer>
+      <SafeArea>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <DismissKeyboardArea>
+            <AuthImageHeader
+              source={HeaderImage}
+            />
+            <SpacedArea>
+              <FormTitle>Create your account</FormTitle>
+              <SignUpForm />
+            </SpacedArea>
+            <Spacer />
+            <NavigateTextButtonContainer>
+              <TextButton
+                text="Sign in"
+                onPress={() => { navigation.navigate('SignIn') }}
+              />
+            </NavigateTextButtonContainer>
+          </DismissKeyboardArea>
+        </TouchableWithoutFeedback>
+      </SafeArea>
+    </PageWithKeyboardContainer>
   )
 }
 

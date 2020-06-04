@@ -1,13 +1,12 @@
 import styled from 'styled-components/native'
 import Constants from 'expo-constants'
-import { Dimensions } from 'react-native'
 import {
   Text,
+  Snackbar,
 } from 'react-native-paper'
 import theme from '@/styles/theme'
 
 const { statusBarHeight } = Constants
-const deviceWidth = Dimensions.get('window').width
 
 export const PageContainer = styled.View`
   flex: 1;
@@ -16,12 +15,15 @@ export const PageContainer = styled.View`
   align-items: center;
 `
 
-export const PageContainerForm = styled.KeyboardAvoidingView`
+export const PageWithKeyboardContainer = styled.KeyboardAvoidingView`
   flex: 1;
+  justify-content: flex-end;
   padding-top: ${statusBarHeight}px;
   background-color: ${theme.colors.background};
-  align-items: center;
-  justify-content: center;
+`
+
+export const SafeArea = styled.SafeAreaView`
+  flex: 1;
 `
 
 export const FormTitle = styled(Text)`
@@ -29,7 +31,6 @@ export const FormTitle = styled(Text)`
   font-size: 18px;
   margin-bottom: 8px;
 `
-
 
 export const PageContainerScroll = styled.ScrollView`
   padding-top: ${statusBarHeight}px;
@@ -43,12 +44,16 @@ export const JustifiedRow = styled.View`
   justify-content: ${(props) => props.space || 'center'};
 `
 
-export const SpacedContainer = styled.View`
-  max-width: 90%;
+export const SpacedArea = styled.View`
+  padding-left: 7%;
+  padding-right: 7%;
+`
+
+export const Spacer = styled.View`
   flex: 1;
 `
 
-export const AuthImageHeader = styled.Image`
-  flex: 1;
-  width: ${deviceWidth}px;
+export const SnackbarAlert = styled(Snackbar)`
+  background-color: ${(props) => theme.colors[props.color]};
+  position: absolute;
 `

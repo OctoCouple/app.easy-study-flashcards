@@ -2,10 +2,12 @@ export const Types = {
   AUTH_REGISTER_SUCCESS: 'AUTH_REGISTER_SUCCESS',
   AUTH_REGISTER_FAILURE: 'AUTH_REGISTER_FAILURE',
   REQUEST_AUTH_REGISTER: 'REQUEST_AUTH_REGISTER',
+  REQUEST_AUTH_LOGIN: 'REQUEST_AUTH_LOGIN',
   REQUEST_STORAGE_TOKEN: 'REQUEST_STORAGE_TOKEN',
   SET_STORAGE_TOKEN: 'SET_STORAGE_TOKEN',
   AUTH_LOGOUT: 'AUTH_LOGOUT',
   REQUEST_AUTH_LOGOUT: 'REQUEST_AUTH_LOGOUT',
+  AUTH_DISMISS_ERROR: 'AUTH_DISMISS_ERROR',
 }
 
 const INITIAL_STATE = {
@@ -44,6 +46,11 @@ export default function authentication(state = INITIAL_STATE, action) {
         isLogged: false,
         isLoading: false,
       }
+    case Types.AUTH_DISMISS_ERROR:
+      return {
+        ...state,
+        error: '',
+      }
 
     default:
       return state
@@ -69,11 +76,18 @@ export const Creators = {
     type: Types.REQUEST_AUTH_REGISTER,
     payload: attributes,
   }),
+  requestLoginAuthentication: (attributes) => ({
+    type: Types.REQUEST_AUTH_LOGIN,
+    payload: attributes,
+  }),
   requestStorageToken: () => ({
     type: Types.REQUEST_STORAGE_TOKEN,
   }),
   setStorageToken: (payload) => ({
     type: Types.SET_STORAGE_TOKEN,
     payload,
+  }),
+  authDismissError: () => ({
+    type: Types.AUTH_DISMISS_ERROR,
   }),
 }
