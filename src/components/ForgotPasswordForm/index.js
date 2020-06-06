@@ -1,5 +1,5 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Creators as AuthCreators } from '@store/authentication'
 import {
   TextInput,
@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   useTheme,
 } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
 import { View } from 'react-native'
 import PrimaryButton from '@components/PrimaryButton'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -16,7 +15,6 @@ import * as yup from 'yup'
 import {
   SnackbarAlert,
 } from '@styles'
-import { ForgotPasswordLink } from './style'
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -24,25 +22,16 @@ const validationSchema = yup.object().shape({
     .email()
     .required()
     .label('Email'),
-  password: yup
-    .string()
-    .min(6)
-    .required()
-    .label('Password'),
 })
 
-const SignInForm = () => {
-  const navigation = useNavigation()
+const ForgotPasswordForm = () => {
   const dispatch = useDispatch()
-  const { authentication } = useSelector((state) => state)
+  const [isSnackbarVisible, setSnackbarVisible] = useState(false)
   const { colors } = useTheme()
 
-  function authenticateUser({ email, password }) {
-    dispatch(AuthCreators.requestLoginAuthentication({ email, password }))
-  }
-
-  function dismissError() {
-    dispatch(AuthCreators.authDismissError())
+  function requestPassword({ email }) {
+    dispatch(AuthCreators.requestForgotPassword({ email }))
+    setSnackbarVisible(true)
   }
 
   return (
@@ -52,7 +41,7 @@ const SignInForm = () => {
           email: '',
           password: '',
         }}
-        onSubmit={async (values) => authenticateUser(values)}
+        onSubmit={async (values) => requestPassword(values)}
         validationSchema={validationSchema}
       >
         {({
@@ -72,7 +61,6 @@ const SignInForm = () => {
               autoCapitalize="none"
               autoCompleteType="email"
               keyboardType="email-address"
-              onFocus={dismissError}
               onChangeText={handleChange('email')}
               onBlur={handleBlur('email')}
               error={(touched.email && errors.email)}
@@ -82,55 +70,32 @@ const SignInForm = () => {
             <HelperText type="error" visible={(touched.email && errors.email)}>
               {(touched.email && errors.email)}
             </HelperText>
-            <TextInput
-              label="Password"
-              mode="outlined"
-              dense
-              autoCapitalize="none"
-              autoCompleteType="password"
-              textContentType="password"
-              secureTextEntry
-              onFocus={dismissError}
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
-              error={touched.password && errors.password}
-              disabled={isSubmitting}
-              value={values.password}
-            />
-            <HelperText type="error" visible={touched.password && errors.password}>
-              {touched.password && errors.password}
-            </HelperText>
-            <ForgotPasswordLink
-              onPress={() => navigation.navigate('ForgotPassword')}
-            >
-              forgot your password?
-            </ForgotPasswordLink>
             {isSubmitting ? (
               <ActivityIndicator animating color={colors.primary} />
             ) : (
               <PrimaryButton
                 onPressAction={handleSubmit}
-                text="Login"
+                text="Send Email"
               />
             )}
           </View>
         )}
       </Formik>
       <SnackbarAlert
-        visible={authentication.error}
-        onDismiss={dismissError}
-        color="error"
+        visible={isSnackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
+        color="primary"
         action={{
           label: <MaterialIcons name="close" size={24} color="white" />,
           onPress: () => {
-            dismissError()
+            setSnackbarVisible(false)
           },
         }}
       >
-        {authentication.error}
+        Check your e-mail to reset your password.
       </SnackbarAlert>
     </View>
   )
 }
 
-export default SignInForm
+export default ForgotPasswordForm

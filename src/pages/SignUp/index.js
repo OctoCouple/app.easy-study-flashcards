@@ -7,13 +7,13 @@ import {
   FormTitle,
   SafeArea,
   PageWithKeyboardContainer,
-  SpacedArea,
   Spacer,
 } from '@styles'
 import {
   AuthImageHeader,
   DismissKeyboardArea,
   NavigateTextButtonContainer,
+  FormArea,
 } from '@styles/authStyle'
 import {
   Keyboard,
@@ -30,10 +30,10 @@ const SignUp = () => {
             <AuthImageHeader
               source={HeaderImage}
             />
-            <SpacedArea>
+            <FormArea>
               <FormTitle>Create your account</FormTitle>
               <SignUpForm />
-            </SpacedArea>
+            </FormArea>
             <Spacer />
             <NavigateTextButtonContainer>
               <TextButton

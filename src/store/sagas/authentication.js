@@ -13,6 +13,7 @@ import { Creators as UserCreator } from '@store/user'
 import {
   register,
   login,
+  requestPassword,
 } from '@api/authentication'
 import { AsyncStorage } from 'react-native'
 
@@ -48,6 +49,14 @@ function* asyncLogin(action) {
   }
 }
 
+function* asyncRequestPassword(action) {
+  try {
+    yield call(requestPassword, action.payload)
+  } catch (error) {
+    yield put(AuthCreator.registerAuthenticationFailure('Internal error'))
+  }
+}
+
 function* setStorageData() {
   const token = yield call(AsyncStorage.getItem, 'token')
   yield put(AuthCreator.setStorageToken({
@@ -77,12 +86,17 @@ function* watchRequestLogout() {
   yield takeLatest(Types.REQUEST_AUTH_LOGOUT, eraseStorageData)
 }
 
+function* watchrequestForgotPassword() {
+  yield takeLatest(Types.REQUEST_FORGOT_PASSWORD, asyncRequestPassword)
+}
+
 function* authenticationSagas() {
   yield all([
     watchRequestAuthRegister(),
     watchRequestStoragetoken(),
     watchRequestLogout(),
     watchRequestAuthLogin(),
+    watchrequestForgotPassword(),
   ])
 }
 
