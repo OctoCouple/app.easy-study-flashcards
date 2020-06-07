@@ -21,3 +21,14 @@ export const login = ({ email, password }) => new Promise((resolve, reject) => {
       reject(error)
     })
 })
+
+export const requestPassword = ({ email }) => new Promise((resolve, reject) => {
+  axios
+    .post('/forgot', { email })
+    .then((res) => {
+      resolve(res.data)
+    })
+    .catch((error) => {
+      reject(error)
+    })
+})

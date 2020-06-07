@@ -4,6 +4,7 @@ export const Types = {
   REQUEST_AUTH_REGISTER: 'REQUEST_AUTH_REGISTER',
   REQUEST_AUTH_LOGIN: 'REQUEST_AUTH_LOGIN',
   REQUEST_STORAGE_TOKEN: 'REQUEST_STORAGE_TOKEN',
+  REQUEST_FORGOT_PASSWORD: 'REQUEST_FORGOT_PASSWORD',
   SET_STORAGE_TOKEN: 'SET_STORAGE_TOKEN',
   AUTH_LOGOUT: 'AUTH_LOGOUT',
   REQUEST_AUTH_LOGOUT: 'REQUEST_AUTH_LOGOUT',
@@ -89,5 +90,9 @@ export const Creators = {
   }),
   authDismissError: () => ({
     type: Types.AUTH_DISMISS_ERROR,
+  }),
+  requestForgotPassword: (payload) => ({
+    type: Types.REQUEST_FORGOT_PASSWORD,
+    payload,
   }),
 }

@@ -1,7 +1,7 @@
 import styled from 'styled-components/native'
 import Constants from 'expo-constants'
 import {
-  Text,
+  Subheading,
   Snackbar,
 } from 'react-native-paper'
 import theme from '@/styles/theme'
@@ -26,7 +26,7 @@ export const SafeArea = styled.SafeAreaView`
   flex: 1;
 `
 
-export const FormTitle = styled(Text)`
+export const FormTitle = styled(Subheading)`
   text-align: center;
   font-size: 18px;
   margin-bottom: 8px;
@@ -41,6 +41,7 @@ export const PageContainerScroll = styled.ScrollView`
 export const JustifiedRow = styled.View`
   flex: 1;
   flex-direction: row;
+  height: 30px;
   justify-content: ${(props) => props.space || 'center'};
 `
 
