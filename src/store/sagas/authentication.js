@@ -14,6 +14,7 @@ import {
   register,
   login,
   requestPassword,
+  socialAuthentication,
 } from '@api/authentication'
 import { AsyncStorage } from 'react-native'
 
@@ -22,6 +23,15 @@ function* setAuthentication({ token, user }) {
   yield put(UserCreator.addUser(user))
   yield call(AsyncStorage.setItem, 'token', token)
   yield call(AsyncStorage.setItem, 'user', JSON.stringify(user))
+}
+
+function* handleFailAuthentication(error, errorMessage) {
+  const errorStatus = path(['response', 'status'], error)
+  if (equals(errorStatus, 401)) {
+    yield put(AuthCreator.registerAuthenticationFailure(errorMessage))
+  } else {
+    yield put(AuthCreator.registerAuthenticationFailure('Internal error'))
+  }
 }
 
 function* asyncRegister(action) {
@@ -39,13 +49,16 @@ function* asyncLogin(action) {
     const { token, user } = yield call(login, action.payload)
     yield setAuthentication({ token, user })
   } catch (error) {
-    const errorStatus = path(['response', 'status'], error)
-    if (equals(errorStatus, 401)) {
-      const errorMessage = 'Invalid credentials'
-      yield put(AuthCreator.registerAuthenticationFailure(errorMessage))
-    } else {
-      yield put(AuthCreator.registerAuthenticationFailure('Internal error'))
-    }
+    yield handleFailAuthentication(error, 'Invalid credentials')
+  }
+}
+
+function* asyncSocialAuth(action) {
+  try {
+    const { token, user } = yield call(socialAuthentication, action.payload)
+    yield setAuthentication({ token, user })
+  } catch (error) {
+    yield handleFailAuthentication(error, 'Invalid Google Token')
   }
 }
 
@@ -86,8 +99,12 @@ function* watchRequestLogout() {
   yield takeLatest(Types.REQUEST_AUTH_LOGOUT, eraseStorageData)
 }
 
-function* watchrequestForgotPassword() {
+function* watchRequestForgotPassword() {
   yield takeLatest(Types.REQUEST_FORGOT_PASSWORD, asyncRequestPassword)
+}
+
+function* watchRequestSocialAuth() {
+  yield takeLatest(Types.REQUEST_SOCIAL_AUTH, asyncSocialAuth)
 }
 
 function* authenticationSagas() {
@@ -96,7 +113,8 @@ function* authenticationSagas() {
     watchRequestStoragetoken(),
     watchRequestLogout(),
     watchRequestAuthLogin(),
-    watchrequestForgotPassword(),
+    watchRequestForgotPassword(),
+    watchRequestSocialAuth(),
   ])
 }
 

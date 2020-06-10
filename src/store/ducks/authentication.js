@@ -8,6 +8,7 @@ export const Types = {
   SET_STORAGE_TOKEN: 'SET_STORAGE_TOKEN',
   AUTH_LOGOUT: 'AUTH_LOGOUT',
   REQUEST_AUTH_LOGOUT: 'REQUEST_AUTH_LOGOUT',
+  REQUEST_SOCIAL_AUTH: 'REQUEST_SOCIAL_AUTH',
   AUTH_DISMISS_ERROR: 'AUTH_DISMISS_ERROR',
 }
 
@@ -93,6 +94,10 @@ export const Creators = {
   }),
   requestForgotPassword: (payload) => ({
     type: Types.REQUEST_FORGOT_PASSWORD,
+    payload,
+  }),
+  requestSocialAuth: (payload) => ({
+    type: Types.REQUEST_SOCIAL_AUTH,
     payload,
   }),
 }

@@ -32,3 +32,16 @@ export const requestPassword = ({ email }) => new Promise((resolve, reject) => {
       reject(error)
     })
 })
+
+export const socialAuthentication = ({ accessToken, provider }) => (
+  new Promise((resolve, reject) => {
+    axios
+      .post(`/social/${provider}`, { accessToken })
+      .then((res) => {
+        resolve(res.data)
+      })
+      .catch((error) => {
+        reject(error)
+      })
+  })
+)
