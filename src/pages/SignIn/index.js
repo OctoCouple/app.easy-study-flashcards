@@ -2,12 +2,17 @@ import React from 'react'
 import SignInForm from '@components/SignInForm'
 import TextButton from '@components/TextButton'
 import { useNavigation } from '@react-navigation/native'
+import GoogleAuth from '@components/GoogleAuth'
+import {
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native'
+
 import HeaderImage from '@/assets/header-auth.png'
 import {
   FormTitle,
   SafeArea,
   PageWithKeyboardContainer,
-  Spacer,
 } from '@styles'
 import {
   AuthImageHeader,
@@ -15,10 +20,6 @@ import {
   NavigateTextButtonContainer,
   FormArea,
 } from '@styles/authStyle'
-import {
-  Keyboard,
-  TouchableWithoutFeedback,
-} from 'react-native'
 
 const SignIn = () => {
   const navigation = useNavigation()
@@ -34,7 +35,7 @@ const SignIn = () => {
               <FormTitle>Login</FormTitle>
               <SignInForm />
             </FormArea>
-            <Spacer />
+            <GoogleAuth />
             <NavigateTextButtonContainer>
               <TextButton
                 text="Create account"
