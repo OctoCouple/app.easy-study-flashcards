@@ -8,6 +8,7 @@ import {
   takeLatest,
   call,
 } from 'redux-saga/effects'
+import axios from '@/service/config'
 import { Creators as AuthCreator, Types } from '@store/authentication'
 import { Creators as UserCreator } from '@store/user'
 import {
@@ -16,13 +17,10 @@ import {
   requestPassword,
   socialAuthentication,
 } from '@api/authentication'
-import { AsyncStorage } from 'react-native'
 
 function* setAuthentication({ token, user }) {
-  yield put(AuthCreator.registerAuthenticationSuccess(token))
   yield put(UserCreator.addUser(user))
-  yield call(AsyncStorage.setItem, 'token', token)
-  yield call(AsyncStorage.setItem, 'user', JSON.stringify(user))
+  yield put(AuthCreator.registerAuthenticationSuccess(token))
 }
 
 function* handleFailAuthentication(error, errorMessage) {
@@ -70,17 +68,10 @@ function* asyncRequestPassword(action) {
   }
 }
 
-function* setStorageData() {
-  const token = yield call(AsyncStorage.getItem, 'token')
-  yield put(AuthCreator.setStorageToken({
-    token,
-    isLogged: !!token,
-  }))
-}
-
 function* eraseStorageData() {
-  yield call(AsyncStorage.clear)
   yield put(AuthCreator.logoutAuthentication())
+  yield put(UserCreator.resetUser())
+  delete axios.defaults.headers.common.Authorization
 }
 
 function* watchRequestAuthRegister() {
@@ -89,10 +80,6 @@ function* watchRequestAuthRegister() {
 
 function* watchRequestAuthLogin() {
   yield takeLatest(Types.REQUEST_AUTH_LOGIN, asyncLogin)
-}
-
-function* watchRequestStoragetoken() {
-  yield takeLatest(Types.REQUEST_STORAGE_TOKEN, setStorageData)
 }
 
 function* watchRequestLogout() {
@@ -110,7 +97,6 @@ function* watchRequestSocialAuth() {
 function* authenticationSagas() {
   yield all([
     watchRequestAuthRegister(),
-    watchRequestStoragetoken(),
     watchRequestLogout(),
     watchRequestAuthLogin(),
     watchRequestForgotPassword(),

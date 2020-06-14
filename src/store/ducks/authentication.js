@@ -3,7 +3,6 @@ export const Types = {
   AUTH_REGISTER_FAILURE: 'AUTH_REGISTER_FAILURE',
   REQUEST_AUTH_REGISTER: 'REQUEST_AUTH_REGISTER',
   REQUEST_AUTH_LOGIN: 'REQUEST_AUTH_LOGIN',
-  REQUEST_STORAGE_TOKEN: 'REQUEST_STORAGE_TOKEN',
   REQUEST_FORGOT_PASSWORD: 'REQUEST_FORGOT_PASSWORD',
   SET_STORAGE_TOKEN: 'SET_STORAGE_TOKEN',
   AUTH_LOGOUT: 'AUTH_LOGOUT',
@@ -81,9 +80,6 @@ export const Creators = {
   requestLoginAuthentication: (attributes) => ({
     type: Types.REQUEST_AUTH_LOGIN,
     payload: attributes,
-  }),
-  requestStorageToken: () => ({
-    type: Types.REQUEST_STORAGE_TOKEN,
   }),
   setStorageToken: (payload) => ({
     type: Types.SET_STORAGE_TOKEN,
